@@ -1,1 +1,1 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/vb4udm0c7m0agvdv/branch/master?svg=true)](https://ci.appveyor.com/project/RomanAZhukov/ordercardselenium-j8ynp/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/0spl5q02rleve556/branch/master?svg=true)](https://ci.appveyor.com/project/RomanAZhukov/carddelivery-4kesy/branch/master)
