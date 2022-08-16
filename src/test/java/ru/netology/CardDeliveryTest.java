@@ -58,7 +58,7 @@ public class CardDeliveryTest {
             "cyrillicCityNameWithHyphenRuRegCenterLowerCase,москва",
             "cyrillicCityNameWithHyphenRuRegCenterWithCaseErrors,мОсква"})
 
-    public void shouldSendFormWithValidCityName(String cityName) {
+    public void shouldSendFormWithValidCityName(String testcase, String cityName) {
         $("[data-test-id='city'] input").setValue(cityName);
         $("[data-test-id='date'] input").doubleClick().sendKeys(BACK_SPACE);
         $("[data-test-id='date'] input").setValue(meetingDateNearest);
@@ -79,7 +79,7 @@ public class CardDeliveryTest {
             "meetingIn_365_Days,365",
             "meetingIn_30_Days,30"})
 
-    public void shouldSendFormWithValidDate(int days) {
+    public void shouldSendFormWithValidDate(String testcase, int days) {
         $("[data-test-id='city'] input").setValue("Екатеринбург");
         $("[data-test-id='date'] input").doubleClick().sendKeys(BACK_SPACE);
         $("[data-test-id='date'] input").setValue(bookDate(days));
@@ -104,7 +104,7 @@ public class CardDeliveryTest {
             "nameSurnameAllUpperCaseCyrillic,ИВАН ПЕТРОВ",
             "nameSurnameAllLowerCaseCyrillic,иван петров"})
 
-    public void shouldSendFormWithValidName(String name) {
+    public void shouldSendFormWithValidName(String testcase, String name) {
         $("[data-test-id='city'] input").setValue("Екатеринбург");
         $("[data-test-id='date'] input").doubleClick().sendKeys(BACK_SPACE);
         $("[data-test-id='date'] input").setValue(meetingDateNearest);
