@@ -1,9 +1,12 @@
 package ru.netology;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -18,8 +21,10 @@ import static org.openqa.selenium.Keys.BACK_SPACE;
 public class CardDeliveryTest {
 
     @BeforeEach
-    public void setupTest() {
-        open("http://localhost:9999");
+    public void setForm() {
+        Configuration.headless = true;
+        open("http://localhost:9999/");
+        SelenideElement form = $("form");
     }
 
     String bookDate(int days) {
@@ -45,7 +50,13 @@ public class CardDeliveryTest {
                 .shouldHave(text("Встреча успешно забронирована на " + meetingDateNearest));
     }
 
-    @Test
+
+    @ParameterizedTest
+    @CsvSource(value = {"regularCyrillicCityNameRuRegCenter,Москва",
+            "cyrillicCityNameWithHyphenRuRegCenter,Петропавловск-Камчатский",
+            "cyrillicCityNameWithHyphenRuRegCenterUpperCase,ПЕТРОПАВЛОВСК-КАМЧАТСКИЙ",
+            "cyrillicCityNameWithHyphenRuRegCenterLowerCase,москва",
+            "cyrillicCityNameWithHyphenRuRegCenterWithCaseErrors,мОсква"})
 
     public void shouldSendFormWithValidCityName(String testcase, String cityName) {
         $("[data-test-id='city'] input").setValue(cityName);
@@ -56,14 +67,17 @@ public class CardDeliveryTest {
         $("[data-test-id='agreement'] .checkbox__box").click();
         $(byText("Забронировать")).click();
         $("[data-test-id='notification'] .notification__title")
-                .shouldBe(Condition.appear, Duration.ofSeconds(25))
+                .shouldBe(Condition.appear, Duration.ofSeconds(15))
                 .shouldHave((text("Успешно!")));
         $("[data-test-id='notification'] .notification__content")
                 .shouldBe(Condition.visible)
                 .shouldHave(text("Встреча успешно забронирована на " + meetingDateNearest));
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource(value = {"meetingInOneWeek,7",
+            "meetingIn_365_Days,365",
+            "meetingIn_30_Days,30"})
 
     public void shouldSendFormWithValidDate(String testcase, int days) {
         $("[data-test-id='city'] input").setValue("Екатеринбург");
@@ -81,7 +95,14 @@ public class CardDeliveryTest {
                 .shouldHave(text("Встреча успешно забронирована на " + bookDate(days)));
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource(value = {"nameWithOneHyphenCyrillic,Анна-Мария Иванова",
+            "nameSurnameWithTwoHyphensCyrillic,Анна-Мария-Ремарк Иванова",
+            "twoLetterNameAndSurnameCyrillic,Ян Бо",
+            "regularNameSurnameWithSpaceCyrillic,Иван Петров",
+            "regularNameSecondNameSurnameWithSpaceCyrillic,Иван Николаевич Петров",
+            "nameSurnameAllUpperCaseCyrillic,ИВАН ПЕТРОВ",
+            "nameSurnameAllLowerCaseCyrillic,иван петров"})
 
     public void shouldSendFormWithValidName(String testcase, String name) {
         $("[data-test-id='city'] input").setValue("Екатеринбург");
